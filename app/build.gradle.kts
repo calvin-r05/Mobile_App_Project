@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    // For Room (kapt)
+    id("org.jetbrains.kotlin.kapt")
 }
 
 android {
@@ -9,7 +12,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.todoapp"
+        applicationId = "com.example.real_project_mobile"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -27,17 +30,23 @@ android {
             )
         }
     }
+
+    // ✅ Make Java use JVM 17
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    // ✅ Make Kotlin target JVM 17
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
     }
+
     buildFeatures {
         compose = true
     }
 }
+
 
 dependencies {
 
@@ -56,4 +65,17 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+
+    // Room
+    val roomVersion = "2.6.1"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+
+    // WorkManager
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+
+    // Coil for image loading
+    implementation("io.coil-kt:coil-compose:2.6.0")
 }
