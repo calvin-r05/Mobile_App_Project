@@ -27,7 +27,6 @@ fun CreateTodoScreen(
 
     var name by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    var imageUrl by remember { mutableStateOf("") }
     var dueDateString by remember { mutableStateOf("") }
 
 
@@ -95,13 +94,7 @@ fun CreateTodoScreen(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // IMAGE URL
-        OutlinedTextField(
-            value = imageUrl,
-            onValueChange = { imageUrl = it },
-            label = { Text("Image URL") },
-            modifier = Modifier.fillMaxWidth()
-        )
+
 
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -128,8 +121,7 @@ fun CreateTodoScreen(
                 val newTodo = Todo(
                     name = name,
                     description = description,
-                    dueDate = millis,
-                    imageUrl = imageUrl
+                    dueDate = millis
                 )
 
                 onSave(newTodo)

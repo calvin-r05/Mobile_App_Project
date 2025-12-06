@@ -66,38 +66,12 @@ private fun TodoListItem(
     todo: Todo,
     onViewDetails: () -> Unit
 ) {
-    // Format date from millis -> "dd/MM/yyyy"
     val dateText = remember(todo.dueDate) {
         val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         sdf.format(Date(todo.dueDate))
     }
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-        ) {
 
-            // Image (placeholder style similar to your mockup)
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                if (!todo.imageUrl.isNullOrBlank()) {
-                    AsyncImage(
-                        model = todo.imageUrl,
-                        contentDescription = "Todo image",
-                        modifier = Modifier.fillMaxSize()
-                    )
-                } else {
-                    Text("Image Placeholder")
-                }
-            }
 
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -131,5 +105,4 @@ private fun TodoListItem(
                 Text("View Details")
             }
         }
-    }
-}
+

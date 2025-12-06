@@ -23,6 +23,9 @@ import com.example.real_project_mobile.data.AppDatabase
 import kotlinx.coroutines.launch
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.foundation.Image
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,19 +70,24 @@ fun RealProjectMobileApp() {
 
                     Spacer(modifier = Modifier.height(32.dp))
 
-                    Box(
+                    // Hardcoded image from drawable
+                    Image(
+                        painter = painterResource(id = R.drawable.todoimg),
+                        contentDescription = "ToDo illustration",
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(180.dp)
-                            .border(
-                                width = 2.dp,
-                                color = Color(0xFFB388FF),
-                                shape = RoundedCornerShape(8.dp)
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = "Image Placeholder")
-                    }
+                            .height(200.dp),
+                        contentScale = ContentScale.Crop
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Inspirational text
+                    Text(
+                        text = "Life’s busy enough — your to-do list shouldn’t be. Our app helps you keep track of everything that matters, from daily errands to long-term goals, without the clutter or stress. Add tasks in seconds, set gentle reminders, and enjoy the simple satisfaction of checking things off. Stay organized, stay calm, and make space for what really matters.",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+
 
                     Spacer(modifier = Modifier.height(24.dp))
 

@@ -9,6 +9,5 @@ data class Todo(
     val name: String,
     val description: String,
     val isComplete: Boolean = false,
-    val dueDate: Long, // millis since epoch
-    val imageUrl : String
+    val dueDate: Long
 )
