@@ -2,34 +2,34 @@ package com.example.real_project_mobile
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.platform.LocalContext
-import coil.compose.AsyncImage
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.real_project_mobile.data.AppDatabase
 import com.example.real_project_mobile.data.Todo
-import kotlinx.coroutines.flow.Flow
 import java.text.SimpleDateFormat
 import java.util.*
-import androidx.compose.foundation.lazy.items
-
 
 @Composable
 fun ViewTodosScreen(
-    onTodoClick: (Todo) -> Unit = {},
+    onTodoClick: (Todo) -> Unit,
     onBackClick: () -> Unit
 ) {
     val context = LocalContext.current
+    val dao = remember { AppDatabase.getDatabase(context).todoDao() }
 
-    // Get DAO & Flow only once
-    val todoDao = remember { AppDatabase.getDatabase(context).todoDao() }
-    val incompleteTodosFlow: Flow<List<Todo>> = remember { todoDao.getIncompleteTodos() }
 
-    val todos by incompleteTodosFlow.collectAsState(initial = emptyList())
+    val listViewModel: TodoListViewModel = viewModel(
+        factory = TodoListViewModel.provideFactory(dao)
+    )
+
+    val todos by listViewModel.incompleteTodos.collectAsState()
 
     Column(
         modifier = Modifier
@@ -37,16 +37,24 @@ fun ViewTodosScreen(
             .padding(16.dp)
     ) {
 
-        // Header
-        Text(
-            text = "ToDo App",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TextButton(onClick = onBackClick) {
+                Text("Back")
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Text(
+                text = "ToDo App",
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold
+            )
+        }
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // List of todos
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -71,10 +79,12 @@ private fun TodoListItem(
         sdf.format(Date(todo.dueDate))
     }
 
-
-
-            Spacer(modifier = Modifier.height(12.dp))
-
+    Card(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
             Text(
                 text = todo.name,
                 style = MaterialTheme.typography.titleMedium,
@@ -88,7 +98,7 @@ private fun TodoListItem(
                 style = MaterialTheme.typography.bodyMedium
             )
 
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
             Text(
                 text = todo.description,
@@ -99,10 +109,10 @@ private fun TodoListItem(
 
             Button(
                 onClick = onViewDetails,
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text("View Details")
             }
         }
-
+    }
+}

@@ -20,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.real_project_mobile.ViewTodosScreen
 import com.example.real_project_mobile.CreateTodoScreen
 import com.example.real_project_mobile.data.AppDatabase
+import com.example.real_project_mobile.data.Todo
 import kotlinx.coroutines.launch
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.runtime.rememberCoroutineScope
@@ -70,7 +71,8 @@ fun RealProjectMobileApp() {
 
                     Spacer(modifier = Modifier.height(32.dp))
 
-                    // Hardcoded image from drawable
+
+
                     Image(
                         painter = painterResource(id = R.drawable.todoimg),
                         contentDescription = "ToDo illustration",
@@ -82,9 +84,9 @@ fun RealProjectMobileApp() {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Inspirational text
+
                     Text(
-                        text = "Life’s busy enough — your to-do list shouldn’t be. Our app helps you keep track of everything that matters, from daily errands to long-term goals, without the clutter or stress. Add tasks in seconds, set gentle reminders, and enjoy the simple satisfaction of checking things off. Stay organized, stay calm, and make space for what really matters.",
+                        text = "Life’s busy enough. your to do list shouldn’t be. Our app helps you keep track of everything that matters, from daily errands to long-term goals, without the clutter or stress. Add tasks in seconds, set gentle reminders, and enjoy the simple satisfaction of checking things off. Stay organized, stay calm, and make space for what really matters.",
                         style = MaterialTheme.typography.bodyMedium
                     )
 
@@ -124,26 +126,41 @@ fun RealProjectMobileApp() {
                 // VIEW TODOS
                 composable("view_todos") {
                     ViewTodosScreen(
-                        onTodoClick = { /* later if you want details */ },
+                        onTodoClick = { todo: Todo -> navController.navigate("todo_detail/${todo.id}" )},
                         onBackClick = { navController.popBackStack() }
                     )
                 }
 
 
 
-                // CREATE TODO
+
                 composable("create_todo") {
                     CreateTodoScreen(
                         onSave = { todo ->
                             scope.launch {
                                 todoDao.insertTodo(todo)
                             }
-                            navController.popBackStack() // go back after saving
+                            navController.popBackStack()
                         },
                         onCancel = {
                             navController.popBackStack()
                         }
                     )
+                }
+
+                composable("todo_detail/{todoId}") { backStackEntry ->
+                    val todoId = backStackEntry.arguments
+                        ?.getString("todoId")
+                        ?.toIntOrNull()
+
+                    if (todoId != null) {
+                        TodoDetailScreen(
+                            todoId = todoId,
+                            onBackClick = { navController.popBackStack() }
+                        )
+                    } else {
+                        navController.popBackStack()
+                    }
                 }
             }
         }

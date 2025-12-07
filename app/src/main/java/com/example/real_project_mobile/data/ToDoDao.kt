@@ -13,6 +13,11 @@ interface TodoDao {
     @Query("SELECT * FROM todos WHERE isComplete = 0 ORDER BY dueDate ASC")
     fun getIncompleteTodos(): Flow<List<Todo>>
 
+
+    @Query("SELECT * FROM todos WHERE id = :id LIMIT 1")
+    fun getTodoById(id: Int): Flow<Todo?>
+
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTodo(todo: Todo)
 
