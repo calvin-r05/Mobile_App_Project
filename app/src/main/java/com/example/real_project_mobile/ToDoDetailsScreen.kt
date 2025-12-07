@@ -155,6 +155,7 @@ fun TodoDetailScreen(
                 val millis = parseDateToMillis(dueDateText)
                 if (millis != null) {
                     detailViewModel.updateTodo(name, description, millis)
+                    onBackClick()
                 }
             },
             modifier = Modifier.fillMaxWidth()
