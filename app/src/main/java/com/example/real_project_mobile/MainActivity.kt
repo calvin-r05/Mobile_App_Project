@@ -27,6 +27,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.Image
+import com.example.real_project_mobile.CompletedTodosScreen
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,8 +99,18 @@ fun RealProjectMobileApp() {
                         onClick = onViewTodosClick,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("View Todos")
+                        Text("View Incomplete Todos")
                     }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Button(
+                        onClick = { navController.navigate("completed_todos") },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("View Completed Todos")
+                    }
+
 
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -130,7 +142,14 @@ fun RealProjectMobileApp() {
                         onBackClick = { navController.popBackStack() }
                     )
                 }
-
+                composable("completed_todos") {
+                    CompletedTodosScreen(
+                        onTodoClick = { todo ->
+                            navController.navigate("todo_detail/${todo.id}")
+                        },
+                        onBackClick = { navController.popBackStack() }
+                    )
+                }
 
 
 

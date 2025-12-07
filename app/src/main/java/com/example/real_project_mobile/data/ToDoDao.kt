@@ -9,6 +9,8 @@ interface TodoDao {
     @Query("SELECT * FROM todos ORDER BY dueDate ASC")
     fun getAllTodos(): Flow<List<Todo>>
 
+    @Query("SELECT * FROM todos WHERE isComplete = 1 ORDER BY dueDate ASC")
+    fun getCompletedTodos(): Flow<List<Todo>>
 
     @Query("SELECT * FROM todos WHERE isComplete = 0 ORDER BY dueDate ASC")
     fun getIncompleteTodos(): Flow<List<Todo>>

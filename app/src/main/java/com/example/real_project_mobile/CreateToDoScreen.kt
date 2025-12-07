@@ -25,6 +25,7 @@ fun CreateTodoScreen(
 ) {
     val context = LocalContext.current
 
+    //todo properties
     var name by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var dueDateString by remember { mutableStateOf("") }
@@ -43,7 +44,7 @@ fun CreateTodoScreen(
         }
     }
 
-
+//creates date selection menu
     fun openDatePicker() {
         val calendar = Calendar.getInstance()
 

@@ -134,17 +134,19 @@ fun TodoDetailScreen(
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        if (todo!!.isComplete == false) {
+            Spacer(modifier = Modifier.height(24.dp))
 
-        //  Mark as Complete
-        Button(
-            onClick = {
-                detailViewModel.markComplete()
-                onBackClick()
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Mark as Complete")
+            //  Mark as Complete
+            Button(
+                onClick = {
+                    detailViewModel.markComplete()
+                    onBackClick()
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Mark as Complete")
+            }
         }
 
         Spacer(modifier = Modifier.height(12.dp))
